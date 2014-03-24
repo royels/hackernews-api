@@ -6,9 +6,32 @@ var restify = require('restify'),
 // Base Hacker News URL
 var BASE_URL = 'https://news.ycombinator.com/';
 
+// Retrieves basic API information
+function getIndex(req, res, next) {
+  res.header('Content-Type', 'application/json; charset=utf-8');
+  res.status(200);
+
+  res.end(JSON.stringify({
+    name: 'hackernews-api',
+    description: 'An unofficial Hacker News API',
+    version: '0.0.2',
+    project_url: 'https://github.com/amitburst/hackernews-api',
+    author: 'Amit Burstein <amit.burstein@gmail.com>',
+    author_url: 'http://amitburst.me'
+  }, null, 4));
+  return next();
+}
+
+// Returns status code 204 (No Content) for favicon.ico
+function getFavicon(req, res, next) {
+  res.status(204);
+  return next();
+}
+
 // Retrieves posts from the given Hacker News posts page URL
 function getPosts(req, res, next, url) {
-  res.writeHead(200, {'Content-Type': 'application/json; charset=utf-8'});
+  res.header('Content-Type', 'application/json; charset=utf-8');
+  res.status(200);
 
   var fetchUrl = req.params.pageId ? BASE_URL + req.params.pageId.replace(/^\//, '') : url;
 
@@ -66,9 +89,9 @@ function getPosts(req, res, next, url) {
     // Add results array and length to final object and return JSON representation
     result.results = results;
     result.length = results.length;
-    res.end(JSON.stringify(result));
+    res.end(JSON.stringify(result, null, 4));
     return next();
-  });  
+  });
 }
 
 // Retrieves posts from Hacker News front page
@@ -84,12 +107,14 @@ function getRecentPosts(req, res, next) {
 // Set up server and API routes and start server
 var server = restify.createServer({
   name: 'hackernews-api',
-  version: '0.0.1'
+  version: '0.0.2'
 });
 server.use(restify.acceptParser(server.acceptable));
 server.use(restify.queryParser());
 server.use(restify.bodyParser());
 
+server.get('/', getIndex);
+server.get('/favicon.ico', getFavicon);
 server.get('/top', getTopPosts);
 server.get('/recent', getRecentPosts);
 
