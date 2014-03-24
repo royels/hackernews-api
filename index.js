@@ -14,7 +14,7 @@ function getIndex(req, res, next) {
   res.end(JSON.stringify({
     name: 'hackernews-api',
     description: 'An unofficial Hacker News API',
-    version: '0.0.2',
+    version: '0.0.3',
     project_url: 'https://github.com/amitburst/hackernews-api',
     author: 'Amit Burstein <amit.burstein@gmail.com>',
     author_url: 'http://amitburst.me'
@@ -25,6 +25,13 @@ function getIndex(req, res, next) {
 // Returns status code 204 (No Content) for favicon.ico
 function getFavicon(req, res, next) {
   res.status(204);
+  return next();
+}
+
+// Disallow crawling of API
+function getRobots(req, res, next) {
+  res.header('Content-Type', 'text/plain');
+  res.send('User-agent: *\nDisallow: /');
   return next();
 }
 
@@ -107,7 +114,7 @@ function getRecentPosts(req, res, next) {
 // Set up server and API routes and start server
 var server = restify.createServer({
   name: 'hackernews-api',
-  version: '0.0.2'
+  version: '0.0.3'
 });
 server.use(restify.acceptParser(server.acceptable));
 server.use(restify.queryParser());
@@ -115,6 +122,7 @@ server.use(restify.bodyParser());
 
 server.get('/', getIndex);
 server.get('/favicon.ico', getFavicon);
+server.get('/robots.txt', getRobots);
 server.get('/top', getTopPosts);
 server.get('/recent', getRecentPosts);
 
