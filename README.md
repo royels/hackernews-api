@@ -1,5 +1,5 @@
 # Hacker News API
-[![Build Status](https://travis-ci.org/amitburst/hackernews-api.svg?branch=develop)](https://travis-ci.org/amitburst/hackernews-api)
+[![Build Status](https://travis-ci.org/amitburst/hackernews-api.svg?branch=master)](https://travis-ci.org/amitburst/hackernews-api)
 
 An unofficial [Hacker News](https://news.ycombinator.com/) API built with [Node.js](http://nodejs.org/).
 
