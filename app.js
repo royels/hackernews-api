@@ -9,7 +9,8 @@ var BASE_URL = 'https://news.ycombinator.com/';
 
 // Configure Express app
 var app = express();
-app.use(logger());
+module.exports = app;
+app.use(logger('dev'));
 
 // GET '/' returns basic API information
 function getIndex(req, res) {
