@@ -1,21 +1,22 @@
 # Hacker News API
 An unofficial [Hacker News](https://news.ycombinator.com/) API built with [Node.js](http://nodejs.org/).  
-  
+
 **Base URL:** [http://hn.amitburst.me/](http://hn.amitburst.me)
 
 ## Endpoints
 
-#### `GET /top`
+#### `GET /news`
+#### `GET /news/:pageId`
 Returns posts from the front page
 
 #### Example
 ```
-$ curl http://hn.amitburst.me/top
+$ curl http://hn.amitburst.me/news
 ---
 {
   "length": 30,
-  "nextPageId": "news2",
-  "results": [
+  "nextId": "news2",
+  "posts": [
     {
       "title": "Project Tango",
       "url": "http://www.google.com/atap/projecttango/",
@@ -34,7 +35,8 @@ $ curl http://hn.amitburst.me/top
 }
 ```
 
-#### `GET /recent`
+#### `GET /newest`
+#### `GET /newest/:pageId`
 Returns the most recently published posts
 
 #### Example
@@ -43,8 +45,8 @@ $ curl http://hn.amitburst.me/recent
 ---
 {
   "length": 30
-  "nextPageId": "/x?fnid=66XOsWHVxnYmDvEMaJ2k3s",
-  "results": [
+  "nextId": "x?fnid=66XOsWHVxnYmDvEMaJ2k3s",
+  "posts": [
     {
       "title": "Microsoft irks big brands in bid to stock mobile store",
       "url": "http://www.geekwire.com/2014/microsoft-webapps-cause-problems-unaware-companies/",
@@ -63,12 +65,5 @@ $ curl http://hn.amitburst.me/recent
 }
 ```
 
-## Options
-
-#### `?limit=`
-Type: `Number`  
-Limits the number of results returned
-
-#### `?pageId=`
-Type: `String`  
-Returns results for the given page ID
+## LICENSE
+[MIT](license)
