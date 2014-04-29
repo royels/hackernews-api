@@ -44,9 +44,19 @@ function getNewestPosts(req, res) {
   getPostsForId(req, res, 'newest');
 }
 
+// GET '/ask' returns the 'ask' page
+function getAskPosts(req, res) {
+  getPostsForId(req, res, 'ask');
+}
+
 // Returns posts for a page ID
-function getPostsForId(req, res, pageId) {
-  var pageId = req.url.split('/', 3)[2] || pageId;
+function getPostsForId(req, res, page) {
+  var pageId = page;
+  var pageIdFromUrl = req.url.split('/', 3)[2];
+  if (pageIdFromUrl) {
+    pageId = pageIdFromUrl === 'news2' ? 'news2' : 'x?fnid=' + pageIdFromUrl;
+  }
+
   var url = BASE_URL + pageId;
 
   request(url, function(error, response, body) {
@@ -67,7 +77,7 @@ function getPostsForId(req, res, pageId) {
         return true;
       }
       if (title === 'More') {
-        result.nextId = anchor.attr('href')[0] === '/' ? anchor.attr('href').substring(1) : anchor.attr('href');
+        result.nextPageId = anchor.attr('href') === 'news2' ? 'news2' : anchor.attr('href').substring(8);
         return false;
       }
 
@@ -107,6 +117,8 @@ app.get('/news', getFrontPage);
 app.get('/news/:pageId', getPostsForId);
 app.get('/newest', getNewestPosts);
 app.get('/newest/:pageId', getPostsForId);
+app.get('/ask', getAskPosts);
+app.get('/ask/:pageId', getPostsForId);
 
 // Start server!
 app.listen(process.env.PORT || 3000);

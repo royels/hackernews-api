@@ -75,7 +75,7 @@ describe('API', function() {
       supertest(app)
         .get('/news')
         .expect(function(res) {
-          assert.equal(res.body.nextId, 'news2');
+          assert.equal(res.body.nextPageId, 'news2');
           assert.typeOf(res.body.length, 'number');
           assert.lengthOf(res.body.posts, res.body.length);
         })
@@ -100,7 +100,6 @@ describe('API', function() {
       supertest(app)
         .get('/news/news2')
         .expect(function(res) {
-          assert.match(res.body.nextId, /^x\?fnid=.*$/);
           assert.typeOf(res.body.length, 'number');
           assert.lengthOf(res.body.posts, res.body.length);
         })
@@ -134,9 +133,50 @@ describe('API', function() {
       supertest(app)
         .get('/newest')
         .expect(function(res) {
-          assert.match(res.body.nextId, /^x\?fnid=.*$/);
           assert.typeOf(res.body.length, 'number');
           assert.lengthOf(res.body.posts, res.body.length);
+        })
+        .end(done)
+    })
+
+    it('should return error JSON for an invalid page ID', function(done) {
+      supertest(app)
+        .get('/newest/asdasd')
+        .expect(function(res) {
+          assert.equal(res.body.error, 'Could not request page');
+        })
+        .end(done)
+    })
+  })
+
+  describe('GET /ask', function(done) {
+    it('should return status code "200"', function(done) {
+      supertest(app)
+        .get('/ask')
+        .expect(200, done)
+    })
+
+    it('should return content-type header "application/json"', function(done) {
+      supertest(app)
+        .get('/ask')
+        .expect('Content-Type', 'application/json', done)
+    })
+
+    it('should return expected content', function(done) {
+      supertest(app)
+        .get('/ask')
+        .expect(function(res) {
+          assert.typeOf(res.body.length, 'number');
+          assert.lengthOf(res.body.posts, res.body.length);
+        })
+        .end(done)
+    })
+
+    it('should return error JSON for an invalid page ID', function(done) {
+      supertest(app)
+        .get('/ask/asdasd')
+        .expect(function(res) {
+          assert.equal(res.body.error, 'Could not request page');
         })
         .end(done)
     })
