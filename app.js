@@ -63,6 +63,9 @@ function getPostsForId(req, res, pageId) {
       var info = anchor.parent().parent().next().children('td.subtext');
 
       var title = anchor.text();
+      if (title == 'scribd') {
+        return true;
+      }
       if (title === 'More') {
         result.nextId = anchor.attr('href')[0] === '/' ? anchor.attr('href').substring(1) : anchor.attr('href');
         return false;
