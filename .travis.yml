@@ -1,3 +1,8 @@
 language: node_js
 node_js:
-  - "0.10"
+- '0.10'
+deploy:
+  app: hackernews-api
+  provider: heroku
+  api_key:
+    secure: kdMO7Cpyhdj9ydJQkpwpMJXGvFEke3Zl+F7fu7rdfDoTnoIe3rj0+nCJ+l3QYDIzC1TYGCPCJcRSloYrz7+jrf/hiUlNlOd8sppgq88j5dP34SxnmI47+bbXIWyGd9Sns6BJJBA4LXQNT5SWXwMr23OQ04QnBs32o3KaS7nuKyw=
