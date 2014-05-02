@@ -85,7 +85,7 @@ function getPostsForId(req, res, page) {
       var points = parseInt(info.children('span').text());
       var username = info.children('a').eq(0).text();
       var userUrl = BASE_URL + info.children('a').eq(0).attr('href');
-      var commentsCount = parseInt(info.children('a').eq(1).text());
+      var commentsCount = parseInt(info.children('a').eq(1).text()) || 0;
       var commentsUrl = BASE_URL + info.children('a').eq(1).attr('href');
 
       posts.push({
@@ -109,6 +109,41 @@ function getPostsForId(req, res, page) {
   });
 }
 
+// GET '/user/:name' returns a user's profile information
+function getUserProfile(req, res) {
+  var url = BASE_URL + 'user?id=' + req.params.name;
+
+  request(url, function(error, response, body) {
+    if (error || response.statusCode != 200 || body === 'No such user.') {
+      res.json({error: 'User could not be found'});
+    }
+
+    var $ = cheerio.load(body);
+    var base = $('form table tr td');
+
+    var username = base.eq(1).text();
+    var created = base.eq(3).text();
+    var karma = parseInt(base.eq(5).text()) || 0;
+    var average = parseFloat(base.eq(7).text()) || 0;
+    var about = base.eq(9).text();
+    var aboutHtml = base.eq(9).html();
+
+    var submissionsUrl = BASE_URL + '/submitted?id=' + username;
+    var commentsUrl = BASE_URL + '/threads?id=' + username;
+
+    var result = {
+      username: username,
+      created: created,
+      karma: karma,
+      average: average,
+      about: about,
+      about_html: aboutHtml
+    }
+
+    res.json(result);
+  });
+}
+
 // Routes
 app.get('/', getIndex);
 app.get('/favicon.ico', getFavicon);
@@ -119,6 +154,7 @@ app.get('/newest', getNewestPosts);
 app.get('/newest/:pageId', getPostsForId);
 app.get('/ask', getAskPosts);
 app.get('/ask/:pageId', getPostsForId);
+app.get('/user/:name', getUserProfile);
 
 // Start server!
 app.listen(process.env.PORT || 3000);

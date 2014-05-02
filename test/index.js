@@ -182,4 +182,37 @@ describe('API', function() {
     })
   })
 
+  describe('GET /user/:name', function(done) {
+    it('should return status code "200"', function(done) {
+      supertest(app)
+        .get('/user/amitburst')
+        .expect(200, done)
+    })
+
+    it('should return content-type header "application/json"', function(done) {
+      supertest(app)
+        .get('/user/amitburst')
+        .expect('Content-Type', 'application/json', done)
+    })
+
+    it('should return expected content', function(done) {
+      supertest(app)
+        .get('/user/amitburst')
+        .expect(function(res) {
+          assert.typeOf(res.body.karma, 'number');
+          assert.typeOf(res.body.average, 'number');
+        })
+        .end(done)
+    })
+
+    it('should return error JSON for an invalid page ID', function(done) {
+      supertest(app)
+        .get('/user/123123123123123123')
+        .expect(function(res) {
+          assert.equal(res.body.error, 'User could not be found');
+        })
+        .end(done)
+    })
+  })
+
 })

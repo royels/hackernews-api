@@ -19,6 +19,9 @@ Return posts from the "ask" page
 `GET /ask`  
 `GET /ask/:pageId`
 
+Return a user's profile information  
+`GET /user/:name`
+
 ### Examples
 ```
 $ curl http://hn.amitburst.me/news
@@ -42,6 +45,18 @@ $ curl http://hn.amitburst.me/news
     },
     ...
   ]
+}
+```
+```
+$ curl http://hn.amitburst.me/user/paulirish
+---
+{
+  username: "paulirish",
+  created: "2119 days ago",
+  karma: 3062,
+  average: 5.86,
+  about: "frontend developer.developer advocate, google chrome.the web can be far more compelling.",
+  about_html: "frontend developer.<p>developer advocate, google chrome.</p><p>the web can be far more compelling.</p>"
 }
 ```
 
