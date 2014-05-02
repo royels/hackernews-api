@@ -17,7 +17,7 @@ function getIndex(req, res) {
   res.json({
     name: 'hackernews-api',
     description: 'An unofficial Hacker News API',
-    version: '0.1.0',
+    version: '0.1.5',
     project_url: 'https://github.com/amitburst/hackernews-api',
     author: 'Amit Burstein <amit.burstein@gmail.com> (http://amitburst.me)'
   });
