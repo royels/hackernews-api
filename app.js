@@ -144,6 +144,43 @@ function getUserProfile(req, res) {
   });
 }
 
+// GET '/jobs' returns the 'jobs' page
+function getJobs(req, res) {
+  var url = BASE_URL + 'jobs';
+
+  request(url, function(error, response, body) {
+    if (error || response.statusCode != 200) {
+      res.json({error: 'Could not request page'});
+    }
+
+    var result = {};
+    var jobs = [];
+    var $ = cheerio.load(body);
+
+    $('table tr td td.title').children().each(function(i, elem) {
+      var title = $(elem).text();
+      var url = $(elem).attr('href');
+
+      if (title.match(/^ (.*) $/)) {
+        return true;
+      }
+
+      if (url.match(/^item\?id=.*$/)) {
+        url = BASE_URL + url;
+      }
+
+      jobs.push({
+        title: title,
+        url: url
+      });
+    });
+
+    result.jobs = jobs;
+    result.length = jobs.length;
+    res.json(result);
+  });
+}
+
 // Routes
 app.get('/', getIndex);
 app.get('/favicon.ico', getFavicon);
@@ -155,6 +192,7 @@ app.get('/newest/:pageId', getPostsForId);
 app.get('/ask', getAskPosts);
 app.get('/ask/:pageId', getPostsForId);
 app.get('/user/:name', getUserProfile);
+app.get('/jobs', getJobs);
 
 // Start server!
 app.listen(process.env.PORT || 3000);

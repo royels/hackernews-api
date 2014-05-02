@@ -4,6 +4,7 @@ var supertest = require('supertest');
 
 describe('API', function() {
 
+  // Index
   describe('GET /', function(done) {
     it('should return status code "200"', function(done) {
       supertest(app)
@@ -27,6 +28,7 @@ describe('API', function() {
     })
   })
 
+  // Favicon
   describe('GET /favicon.ico', function(done) {
     it('should return status code "204"', function(done) {
       supertest(app)
@@ -35,6 +37,7 @@ describe('API', function() {
     })
   })
 
+  // Robots
   describe('GET /robots.txt', function(done) {
     it('should return status code "200"', function(done) {
       supertest(app)
@@ -58,6 +61,7 @@ describe('API', function() {
     })
   })
 
+  // News
   describe('GET /news', function(done) {
     it('should return status code "200"', function(done) {
       supertest(app)
@@ -83,6 +87,7 @@ describe('API', function() {
     })
   })
 
+  // News for page ID
   describe('GET /news/:pageId', function(done) {
     it('should return status code "200"', function(done) {
       supertest(app)
@@ -116,6 +121,7 @@ describe('API', function() {
     })
   })
 
+  // Newest
   describe('GET /newest', function(done) {
     it('should return status code "200"', function(done) {
       supertest(app)
@@ -149,6 +155,7 @@ describe('API', function() {
     })
   })
 
+  // Ask
   describe('GET /ask', function(done) {
     it('should return status code "200"', function(done) {
       supertest(app)
@@ -182,6 +189,7 @@ describe('API', function() {
     })
   })
 
+  // User profile
   describe('GET /user/:name', function(done) {
     it('should return status code "200"', function(done) {
       supertest(app)
@@ -210,6 +218,31 @@ describe('API', function() {
         .get('/user/123123123123123123')
         .expect(function(res) {
           assert.equal(res.body.error, 'User could not be found');
+        })
+        .end(done)
+    })
+  })
+
+  // Jobs
+  describe('GET /jobs', function(done) {
+    it('should return status code "200"', function(done) {
+      supertest(app)
+        .get('/jobs')
+        .expect(200, done)
+    })
+
+    it('should return content-type header "application/json"', function(done) {
+      supertest(app)
+        .get('/jobs')
+        .expect('Content-Type', 'application/json', done)
+    })
+
+    it('should return expected content', function(done) {
+      supertest(app)
+        .get('/jobs')
+        .expect(function(res) {
+          assert.typeOf(res.body.length, 'number');
+          assert.lengthOf(res.body.jobs, res.body.length);
         })
         .end(done)
     })

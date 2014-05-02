@@ -22,7 +22,11 @@ Return posts from the "ask" page
 Return a user's profile information  
 `GET /user/:name`
 
+Return posts from the "jobs" page  
+`GET /jobs`
+
 ### Examples
+
 ```
 $ curl http://hn.amitburst.me/news
 ---
@@ -47,6 +51,7 @@ $ curl http://hn.amitburst.me/news
   ]
 }
 ```
+
 ```
 $ curl http://hn.amitburst.me/user/paulirish
 ---
@@ -57,6 +62,25 @@ $ curl http://hn.amitburst.me/user/paulirish
   average: 5.86,
   about: "frontend developer.developer advocate, google chrome.the web can be far more compelling.",
   about_html: "frontend developer.<p>developer advocate, google chrome.</p><p>the web can be far more compelling.</p>"
+}
+```
+
+```
+$ curl http://hn.amitburst.me/jobs
+---
+{
+  "length": 14,
+  "jobs": [
+    {
+      "title": "Hiring engineer #2 for fast-growing enterprise logistics company",
+      "url": "https://news.ycombinator.com/item?id=7683815",
+    },
+    {
+      "title": "Amicus (YC S12) is hiring a Sales Director in NYC",
+      "url": "http://jobs.amicushq.com/pages/sales_director"
+    },
+    ...
+  ]
 }
 ```
 
