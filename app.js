@@ -82,7 +82,7 @@ function getPostsForId(req, res, page) {
       }
 
       var url = anchor.attr('href').match(/item\?id=(.*)/) ? BASE_URL + anchor.attr('href') : anchor.attr('href');
-      var points = parseInt(info.children('span').text());
+      var points = parseInt(info.children('span').text()) || 0;
       var username = info.children('a').eq(0).text();
       var userUrl = BASE_URL + info.children('a').eq(0).attr('href');
       var commentsCount = parseInt(info.children('a').eq(1).text()) || 0;
